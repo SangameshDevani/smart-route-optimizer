@@ -1,4 +1,4 @@
-"use client"
+https://github.com/SangameshDevani/smart-route-optimizer"use client"
 
 import { useState, useEffect, useCallback } from "react"
 import { Header } from "@/components/header"
@@ -86,13 +86,13 @@ export default function SmartRouteOptimizer() {
   // Recalculate routes when preferences change
   useEffect(() => {
     if (routes.length === 0) return
-    
+
     setIsAnalyzing(true)
     const timer = setTimeout(() => {
       setRoutes((currentRoutes) => {
         return currentRoutes.map((route) => {
           let scoreModifier = 0
-          
+
           if (routePreference === "fastest") {
             scoreModifier = route.id === "fastest" ? 10 : route.id === "shortest" ? -5 : -10
           } else if (routePreference === "shortest") {
@@ -100,11 +100,11 @@ export default function SmartRouteOptimizer() {
           } else if (routePreference === "eco") {
             scoreModifier = route.id === "scenic" ? 10 : route.id === "fastest" ? -10 : 0
           }
-          
+
           if (avoidHighways && route.id === "fastest") {
             scoreModifier -= 20
           }
-          
+
           return {
             ...route,
             aiScore: Math.max(0, Math.min(100, route.aiScore + scoreModifier)),
@@ -113,7 +113,7 @@ export default function SmartRouteOptimizer() {
       })
       setIsAnalyzing(false)
     }, 500)
-    
+
     return () => clearTimeout(timer)
   }, [routePreference, avoidTolls, avoidHighways, routes.length])
 
@@ -213,7 +213,7 @@ export default function SmartRouteOptimizer() {
                     {selectedRoute.duration} min | {selectedRoute.distance} km
                   </p>
                 </div>
-                <button 
+                <button
                   onClick={handleStartNavigation}
                   className="rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
                 >

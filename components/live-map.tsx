@@ -57,16 +57,15 @@ const ROUTE_META = [
   { id: "scenic",   label: "Riverside Drive", color: "#22c55e", glow: "#86efac" },
 ]
 
-// Elegant custom map style (no clutter, road-focused)
+// Clean light map style — based on Google Maps default with minor tweaks
 const MAP_STYLES = [
-  { featureType: "poi",                elementType: "labels",     stylers: [{ visibility: "off" }] },
-  { featureType: "transit.station",    elementType: "labels",     stylers: [{ visibility: "off" }] },
-  { featureType: "administrative",     elementType: "labels.text.fill", stylers: [{ color: "#6b7280" }] },
-  { featureType: "road.highway",       elementType: "geometry",   stylers: [{ color: "#374151" }] },
-  { featureType: "road.arterial",      elementType: "geometry",   stylers: [{ color: "#1f2937" }] },
-  { featureType: "road.local",         elementType: "geometry",   stylers: [{ color: "#111827" }] },
-  { featureType: "water",              elementType: "geometry",   stylers: [{ color: "#0f172a" }] },
-  { featureType: "landscape",          elementType: "geometry",   stylers: [{ color: "#1a1f2e" }] },
+  { featureType: "poi",             elementType: "labels",          stylers: [{ visibility: "off" }] },
+  { featureType: "poi.park",        elementType: "geometry.fill",   stylers: [{ color: "#d1fae5" }] },
+  { featureType: "transit.station", elementType: "labels",          stylers: [{ visibility: "off" }] },
+  { featureType: "road.highway",    elementType: "geometry.fill",   stylers: [{ color: "#fde68a" }] },
+  { featureType: "road.highway",    elementType: "geometry.stroke", stylers: [{ color: "#f59e0b" }] },
+  { featureType: "water",           elementType: "geometry.fill",   stylers: [{ color: "#bfdbfe" }] },
+  { featureType: "landscape",       elementType: "geometry.fill",   stylers: [{ color: "#f9fafb" }] },
 ]
 
 export function LiveMap({
@@ -417,16 +416,16 @@ export function LiveMap({
 
       {/* Zoom controls */}
       <div className="absolute right-4 top-4 flex flex-col gap-2">
-        <div className="flex flex-col overflow-hidden rounded-xl border border-white/10 bg-[#1a1f2e]/90 shadow-xl backdrop-blur">
-          <Button variant="ghost" size="icon" onClick={handleZoomIn}  className="rounded-none border-b border-white/10 text-white hover:bg-white/10">
+        <div className="flex flex-col overflow-hidden rounded-xl border border-gray-200 bg-white shadow-lg">
+          <Button variant="ghost" size="icon" onClick={handleZoomIn}  className="rounded-none border-b border-gray-100 text-gray-700 hover:bg-gray-50">
             <Plus className="h-4 w-4" />
           </Button>
-          <Button variant="ghost" size="icon" onClick={handleZoomOut} className="rounded-none text-white hover:bg-white/10">
+          <Button variant="ghost" size="icon" onClick={handleZoomOut} className="rounded-none text-gray-700 hover:bg-gray-50">
             <Minus className="h-4 w-4" />
           </Button>
         </div>
         <Button variant="outline" size="icon" onClick={handleLocate}
-          className="rounded-xl border-white/10 bg-[#1a1f2e]/90 text-white shadow-xl backdrop-blur hover:bg-white/10"
+          className="rounded-xl border-gray-200 bg-white text-gray-700 shadow-lg hover:bg-gray-50"
           title="Go to my location">
           <LocateFixed className="h-4 w-4" />
         </Button>
@@ -434,10 +433,10 @@ export function LiveMap({
 
       {/* Layer toggles */}
       <div className="absolute left-4 top-4">
-        <div className="rounded-xl border border-white/10 bg-[#1a1f2e]/90 p-3 shadow-xl backdrop-blur">
+        <div className="rounded-xl border border-gray-200 bg-white p-3 shadow-lg">
           <div className="mb-2 flex items-center gap-2">
-            <Layers className="h-4 w-4 text-white/60" />
-            <span className="text-xs font-semibold text-white">Layers</span>
+            <Layers className="h-4 w-4 text-gray-500" />
+            <span className="text-xs font-semibold text-gray-700">Layers</span>
           </div>
           <div className="flex flex-col gap-1">
             {[
@@ -447,7 +446,7 @@ export function LiveMap({
               <button key={label} onClick={() => set(!val)}
                 className={cn(
                   "rounded-lg px-3 py-1 text-xs font-medium transition-all",
-                  val ? "bg-blue-500 text-white shadow-sm" : "text-white/60 hover:bg-white/10"
+                  val ? "bg-blue-500 text-white shadow-sm" : "text-gray-500 hover:bg-gray-100"
                 )}>
                 {label}
               </button>
@@ -457,25 +456,25 @@ export function LiveMap({
       </div>
 
       {/* Route legend */}
-      <div className="absolute bottom-4 left-4 rounded-xl border border-white/10 bg-[#1a1f2e]/90 p-4 shadow-xl backdrop-blur">
-        <div className="mb-2 text-xs font-semibold text-white">Routes</div>
+      <div className="absolute bottom-4 left-4 rounded-xl border border-gray-200 bg-white p-4 shadow-lg">
+        <div className="mb-2 text-xs font-semibold text-gray-700">Routes</div>
         <div className="space-y-2">
           {ROUTE_META.map((meta) => (
             <div key={meta.id} onClick={() => onRouteSelect(meta.id)}
               className={cn(
-                "flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 transition-all hover:bg-white/10",
-                selectedRouteId === meta.id && "bg-white/10"
+                "flex cursor-pointer items-center gap-3 rounded-lg px-2 py-1.5 transition-all hover:bg-gray-50",
+                selectedRouteId === meta.id && "bg-gray-100"
               )}>
-              <div className="h-2 w-8 rounded-full shadow-sm"
-                style={{ background: meta.color, boxShadow: `0 0 8px ${meta.color}80` }} />
-              <span className="text-xs text-white/80">{meta.label}</span>
+              <div className="h-2 w-8 rounded-full"
+                style={{ background: meta.color, boxShadow: `0 0 6px ${meta.color}60` }} />
+              <span className="text-xs text-gray-700">{meta.label}</span>
             </div>
           ))}
         </div>
-        <div className="mt-3 border-t border-white/10 pt-2">
+        <div className="mt-3 border-t border-gray-100 pt-2">
           <div className="flex items-center gap-3">
-            <div className="w-8 border-t-2 border-dashed border-slate-500" />
-            <span className="text-xs text-white/40">Alternative</span>
+            <div className="w-8 border-t-2 border-dashed border-gray-300" />
+            <span className="text-xs text-gray-400">Alternative</span>
           </div>
         </div>
       </div>
@@ -489,32 +488,32 @@ export function LiveMap({
 
       {/* Loading spinner */}
       {isLoading && (
-        <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-white/10 bg-[#1a1f2e]/90 px-3 py-2 shadow-xl backdrop-blur">
-          <Loader2 className="h-4 w-4 animate-spin text-blue-400" />
-          <span className="text-xs text-white/70">Loading routes…</span>
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-lg">
+          <Loader2 className="h-4 w-4 animate-spin text-blue-500" />
+          <span className="text-xs text-gray-600">Loading routes…</span>
         </div>
       )}
 
       {/* Error notice */}
       {routeError && !isLoading && (
-        <div className="absolute bottom-4 right-4 rounded-xl border border-amber-500/40 bg-amber-500/10 px-3 py-2 shadow-xl">
-          <span className="text-xs text-amber-400">{routeError}</span>
+        <div className="absolute bottom-4 right-4 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 shadow-lg">
+          <span className="text-xs text-amber-600">{routeError}</span>
         </div>
       )}
 
       {/* GPS status */}
       {userLocation && !isLoading && !routeError && (
-        <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-white/10 bg-[#1a1f2e]/90 px-3 py-2 shadow-xl backdrop-blur">
-          <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-          <span className="text-xs text-white/60">GPS Active</span>
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 rounded-xl border border-gray-200 bg-white px-3 py-2 shadow-lg">
+          <div className="h-2 w-2 animate-pulse rounded-full bg-green-500" />
+          <span className="text-xs text-gray-600">GPS Active</span>
         </div>
       )}
 
       {/* Map loading overlay */}
       {!mapReady && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#1a1f2e]">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-gray-50">
           <div className="h-10 w-10 animate-spin rounded-full border-2 border-blue-500 border-t-transparent" />
-          <p className="mt-3 text-sm text-white/50">Loading map…</p>
+          <p className="mt-3 text-sm text-gray-400">Loading map…</p>
         </div>
       )}
     </div>

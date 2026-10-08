@@ -84,9 +84,3 @@ smart-route-optimizer/
 * Add estimated fuel/cost calculations
 * Integrate real-time traffic information
 
-## 👨‍💻 Author
-
-**Sangamesh Devani**
-
-Computer Science Engineering
-Dayananda Sagar University
